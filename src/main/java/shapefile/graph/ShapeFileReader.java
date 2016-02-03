@@ -1,8 +1,14 @@
 package shapefile.graph;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+
+
 
 
 
@@ -38,8 +44,10 @@ import org.opengis.util.TypeName;
 public class ShapeFileReader {
 
 	// nodeCollection contain all Intersections(Vertexes) with labels;
-    ArrayList<Intersection> nodeCollection = new ArrayList<Intersection>();
-    
+   // ArrayList<Intersection> nodeCollection = new ArrayList<Intersection>();
+	 HashMap<String, Intersection> nodeCollection = new HashMap<String, Intersection>();
+
+	
     //roadCollection contain all route information;
     ArrayList<ArrayList<String>> roadInfo = new ArrayList<>();
 //    
@@ -52,6 +60,8 @@ public class ShapeFileReader {
 	@SuppressWarnings("unchecked")
 	public void readRoad() throws Exception {
         // display a data store file chooser dialog for shapefiles
+//		   FileWriter fileWriter = new FileWriter("RoadInfo");
+//		   BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
         File file = JFileDataStoreChooser.showOpenFile("shp", null);
         if (file == null) {
             return;
@@ -77,7 +87,7 @@ public class ShapeFileReader {
            ArrayList<String> rdinfo= new ArrayList<>();
     	   while(iterator.hasNext()){
     		   ArrayList<String> rdbuffer = new ArrayList<>();
-       			
+    
        			
        		   SimpleFeature feature = (SimpleFeature) iterator.next();  
         	   rdinfo.add((String)feature.getAttribute("SNODEID"));
@@ -111,6 +121,7 @@ public class ShapeFileReader {
         SimpleFeatureSource featureSource = store.getFeatureSource();
        
         SimpleFeatureType SHAPE_TYPE = featureSource.getSchema();
+        System.out.println(SHAPE_TYPE);
         String typeName = store.getTypeNames()[0]; 
        
         Filter filter = CQL.toFilter("INCLUDE");
@@ -118,16 +129,22 @@ public class ShapeFileReader {
        if(typeName.equals("Nbeijing_point")){
            SimpleFeatureCollection result = featureSource.getFeatures(filter);
            FeatureIterator iterator = result.features();
+   
     	   while(iterator.hasNext()){
     		   Intersection point = new Intersection(null);
         	   SimpleFeature feature = (SimpleFeature) iterator.next();
+        	   
         	   point.setLabel((String)feature.getAttribute("ID")); 
-        	   nodeCollection.add(point);
+        	   
+        	   //write into a file
+        	   nodeCollection.put(point.getLabel(),point);
+       
 //        	   System.out.printf("NodeID = %s", 
 //        			   feature.getAttribute("ID")
 //        			   );
-//        	   System.out.println();	   
+//        	   System.out.println();	
          }
+    	   
        }
        else if (typeName.equals("Rbeijing_polyline")) {
         	   System.out.println("Warning! This is a Road Shapefile");	   

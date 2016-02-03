@@ -23,6 +23,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="/Trajectory"/>
-	<classpathentry kind="lib" path="//puffball.labs.eait.uq.edu.au/s4366844/Documents/Workspace/create.graph.jar"/>
+	<classpathentry kind="lib" path="//puffball.labs.eait.uq.edu.au/s4366844/Documents/Workspace/create.graph.jar" sourcepath="/Trajectory"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
