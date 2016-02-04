@@ -2,62 +2,62 @@ package shapefile.graph;
 
 
 public class Node {
-	private char ID;
-	private char Cross_flag;
-	private char Cross_LID;
-	private char mainNodeID;
-	private char Adjoin_NID;
-	private char Node_LID;
+	private String ID;
+	private String Cross_flag;
+	private String Cross_LID;
+	private String mainNodeID;
+	private String Adjoin_NID;
+	private String Node_LID;
 	
 	public Node(){
 		
 	}
 
-	public char getID() {
+	public String getID() {
 		return ID;
 	}
 
-	public void setID(char iD) {
+	public void setID(String iD) {
 		ID = iD;
 	}
 
-	public char getCross_flag() {
+	public String getCross_flag() {
 		return Cross_flag;
 	}
 
-	public void setCross_flag(char cross_flag) {
+	public void setCross_flag(String cross_flag) {
 		Cross_flag = cross_flag;
 	}
 
-	public char getCross_LID() {
+	public String getCross_LID() {
 		return Cross_LID;
 	}
 
-	public void setCross_LID(char cross_LID) {
+	public void setCross_LID(String cross_LID) {
 		Cross_LID = cross_LID;
 	}
 
-	public char getMainNodeID() {
+	public String getMainNodeID() {
 		return mainNodeID;
 	}
 
-	public void setMainNodeID(char mainNodeID) {
+	public void setMainNodeID(String mainNodeID) {
 		this.mainNodeID = mainNodeID;
 	}
 
-	public char getAdjoin_NID() {
+	public String getAdjoin_NID() {
 		return Adjoin_NID;
 	}
 
-	public void setAdjoin_NID(char adjoin_NID) {
+	public void setAdjoin_NID(String adjoin_NID) {
 		Adjoin_NID = adjoin_NID;
 	}
 
-	public char getNode_LID() {
+	public String getNode_LID() {
 		return Node_LID;
 	}
 
-	public void setNode_LID(char node_LID) {
+	public void setNode_LID(String node_LID) {
 		Node_LID = node_LID;
 	}
 }

@@ -2,53 +2,53 @@ package shapefile.graph;
 
 public class Road {
 	
-	private char LID;
-	private char SnodeID;
-	private char EnodeID;
-	private char Length;
-	private char Direction;
+	private String LID;
+	private String SnodeID;
+	private String EnodeID;
+	private String Length;
+	private String Direction;
 	
 	public Road(){
 		
 	}
 
-	public char getLID() {
+	public String getLID() {
 		return LID;
 	}
 
-	public void setLID(char lID) {
+	public void setLID(String lID) {
 		LID = lID;
 	}
 
-	public char getSnodeID() {
+	public String getSnodeID() {
 		return SnodeID;
 	}
 
-	public void setSnodeID(char snodeID) {
+	public void setSnodeID(String snodeID) {
 		SnodeID = snodeID;
 	}
 
-	public char getEnodeID() {
+	public String getEnodeID() {
 		return EnodeID;
 	}
 
-	public void setEnodeID(char enodeID) {
+	public void setEnodeID(String enodeID) {
 		EnodeID = enodeID;
 	}
 
-	public char getLength() {
+	public String getLength() {
 		return Length;
 	}
 
-	public void setLength(char length) {
+	public void setLength(String length) {
 		Length = length;
 	}
 
-	public char getDirection() {
+	public String getDirection() {
 		return Direction;
 	}
 
-	public void setDirection(char direction) {
+	public void setDirection(String direction) {
 		Direction = direction;
 	}
 }

@@ -17,7 +17,9 @@ import java.util.List;
 
 
 
+
 import map.graph.Intersection;
+import map.graph.Vertex;
 
 import org.geotools.data.Query;
 import org.geotools.data.DefaultTransaction;
@@ -46,11 +48,12 @@ import org.opengis.util.TypeName;
 
 public class ShapeFileReader {
 
+	ArrayList<Node> nodeInfo = new ArrayList<>();
 	// nodeCollection contain all Intersections(Vertexes) with labels;
-	 HashMap<String, Intersection> nodeCollection = new HashMap<String, Intersection>();
+	 HashMap<String, Vertex> vertexCollection = new HashMap<String, Vertex>();
 
     //roadCollection contain all route information;
-    ArrayList<ArrayList<String>> roadInfo = new ArrayList<>();
+    ArrayList<Road> roadInfo = new ArrayList<>();
     
     //adjoinNodes save all nodes pairs with an adjoin nodes;
     ArrayList<ArrayList<String>> adjoinNodes = new ArrayList<>(); 
@@ -62,8 +65,6 @@ public class ShapeFileReader {
 	@SuppressWarnings("unchecked")
 	
 	public void readNode() throws Exception {
-	
-		//PrintWriter writer = new PrintWriter("NodeInfo");
 
         // display a data store file chooser dialog for shapefiles
         File file = JFileDataStoreChooser.showOpenFile("shp", null);
@@ -73,7 +74,6 @@ public class ShapeFileReader {
         FileDataStore store = FileDataStoreFinder.getDataStore(file);
         SimpleFeatureSource featureSource = store.getFeatureSource();       
         SimpleFeatureType SHAPE_TYPE = featureSource.getSchema();
-       // System.out.println(SHAPE_TYPE);
         String typeName = store.getTypeNames()[0]; 
        
         Filter filter = CQL.toFilter("INCLUDE");
@@ -81,17 +81,25 @@ public class ShapeFileReader {
        if(typeName.equals("Nbeijing_point")){
            SimpleFeatureCollection result = featureSource.getFeatures(filter);
            FeatureIterator iterator = result.features();
-           ArrayList<String> adjoinInfo = new ArrayList<>();
+           //ArrayList<String> adjoinInfo = new ArrayList<>();
    
     	   while(iterator.hasNext()){
-    		   Intersection point = new Intersection(null);
+    		   Node node = new Node();
+    		  
         	   SimpleFeature feature = (SimpleFeature) iterator.next();
-
-        	   point.setLabel((String)feature.getAttribute("ID")); 
         	   
-        	   //write into a file
-        	   nodeCollection.put(point.getLabel(),point);
-       
+        	   node.setID((String)feature.getAttribute("ID"));
+        	   node.setCross_flag((String)feature.getAttribute("CROSS_FLAG"));
+        	   node.setCross_LID((String)feature.getAttribute("CROSS_LID"));
+        	   node.setMainNodeID((String)feature.getAttribute("MAINNODEID"));
+        	   node.setNode_LID((String)feature.getAttribute("NODE_LID"));
+        	   node.setAdjoin_NID((String)feature.getAttribute("ADJOIN_NID"));
+        	   
+        	   nodeInfo.add(node);
+        	   Vertex vertex = new Vertex(node.getID());
+        	   vertexCollection.put(vertex.getLabel(), vertex);
+        	   
+        	   ArrayList<String> adjoinInfo = new ArrayList<>();
         	   if((String)feature.getAttribute("ADJOIN_NID") != ("0")){
         		   ArrayList<String> adjoinBuffer= new ArrayList<>();
         		   
@@ -100,36 +108,19 @@ public class ShapeFileReader {
             	   adjoinBuffer = (ArrayList<String>) adjoinInfo.clone();
          			adjoinNodes.add(adjoinBuffer);
          			adjoinInfo.clear();
-            	   
-        	   }
-        		   
-//        	   writer.printf("NodeID = %s, Cross_flag = %s, Cross_LID = %s, mainNodeID = %s, subNodeID = %s, subNodeID2 = %s, Node_LID = %s, Adjoin_NID = %s\n", 
-//        			   feature.getAttribute("ID"),
-//        			   feature.getAttribute("CROSS_FLAG"),
-//        			   feature.getAttribute("CROSS_LID"),
-//        			   feature.getAttribute("MAINNODEID"),
-//        			   feature.getAttribute("SUBNODEID"),
-//        			   feature.getAttribute("SUBNODEID2"),
-//        			   feature.getAttribute("NODE_LID"),
-//        			   feature.getAttribute("ADJOIN_NID")
-//        			   );
-         }
-//    	   writer.close();
-    	   
+            	   }
+    	   }
        }
        else if (typeName.equals("Rbeijing_polyline")) {
         	   System.out.println("Warning! This is a Road Shapefile");	   
-         }
-	
+         }	
        else {
 		System.out.println("Read file failed!");
-	}
-       
+       }       
     }
+	
 	@SuppressWarnings("unchecked")
 	public void readRoad() throws Exception {
-        // display a data store file chooser dialog for shapefiles
-		//PrintWriter writer = new PrintWriter("RoadInfo");
         File file = JFileDataStoreChooser.showOpenFile("shp", null);
         if (file == null) {
             return;
@@ -137,15 +128,12 @@ public class ShapeFileReader {
  
         FileDataStore store = FileDataStoreFinder.getDataStore(file);
         SimpleFeatureSource featureSource = store.getFeatureSource();
-       
         SimpleFeatureType SHAPE_TYPE = featureSource.getSchema();
-         System.out.println(SHAPE_TYPE);
         String typeName = store.getTypeNames()[0]; 
        
         Filter filter = CQL.toFilter("INCLUDE");
  
-       if(typeName.equals("Nbeijing_point")){
-           
+       if(typeName.equals("Nbeijing_point")){           
         	   System.out.println("Warning! This is a Node shapefile!");	   
          }
        
@@ -153,29 +141,18 @@ public class ShapeFileReader {
            
            SimpleFeatureCollection result = featureSource.getFeatures(filter);
            FeatureIterator iterator = result.features();
-           ArrayList<String> rdinfo= new ArrayList<>();
     	   while(iterator.hasNext()){
-    		   ArrayList<String> rdbuffer = new ArrayList<>();
-    
-       			
+    		   Road road = new Road();
        		   SimpleFeature feature = (SimpleFeature) iterator.next();  
-        	   rdinfo.add((String)feature.getAttribute("SNODEID"));
-        	   rdinfo.add((String)feature.getAttribute("ENODEID"));
-        	   rdinfo.add((String)feature.getAttribute("LENGTH"));
-        	   rdbuffer = (ArrayList<String>) rdinfo.clone();
-      			roadInfo.add(rdbuffer);
-      			rdinfo.clear();
-//        	  
-//      			writer.printf("ID = %s, SnodeID = %s, EnodeID = %s, Length = %s, Direction = %s, \n", 
-//        			   feature.getAttribute("ID"),
-//        			   feature.getAttribute("SNODEID"),
-//        			   feature.getAttribute("ENODEID"),
-//        			   feature.getAttribute("LENGTH"),
-//        			   feature.getAttribute("DIRECTION")
-//        			   );
-//        	  
+       		 
+        	   road.setLID((String)feature.getAttribute("ID"));
+        	   road.setSnodeID((String)feature.getAttribute("SNODEID"));
+        	   road.setEnodeID((String)feature.getAttribute("ENODEID"));
+        	   road.setLength((String)feature.getAttribute("LENGTH"));
+        	   road.setDirection((String)feature.getAttribute("DIRECTION"));
+       		   
+        	   roadInfo.add(road);
          }
-//    	   writer.close();
 	}
        else {
 		System.out.println("Read file failed!");
