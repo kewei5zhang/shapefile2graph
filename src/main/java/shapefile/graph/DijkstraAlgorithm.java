@@ -16,6 +16,9 @@ public class DijkstraAlgorithm
 	 */
     public static void computePaths(Vertex source)
     {
+    	if(source == null){
+    		return;
+    	}
         source.minDistance = 0;
         PriorityQueue<Vertex> vertexQueue = new PriorityQueue<Vertex>();
         vertexQueue.add(source);

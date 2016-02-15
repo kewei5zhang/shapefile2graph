@@ -17,12 +17,16 @@ public class DemoGraph{
 		//compute shortest path
 		String source = "173036";
 		String target = "273509";
-		DijkstraAlgorithm.computePaths((Vertex)dGraph.getShapeFileNodes().get(source));
-		System.out.println("Distance from " + source + " to " + target + " : " + dGraph.getShapeFileNodes().get(target).minDistance);
-		List<Vertex> path = DijkstraAlgorithm.getShortestPathTo(dGraph.getShapeFileNodes().get(target));
-		System.out.println("Path:" + path);
-
-}}
+		try {
+			DijkstraAlgorithm.computePaths((Vertex)dGraph.getShapeFileNodes().get(source));
+			System.out.println("Distance from " + source + " to " + target + " : " + dGraph.getShapeFileNodes().get(target).minDistance);
+			List<Vertex> path = DijkstraAlgorithm.getShortestPathTo(dGraph.getShapeFileNodes().get(target));
+			System.out.println("Path:" + path);
+		} catch (NullPointerException ex) {
+			System.out.println("No such nodes in the graph, or there is nothing in the graph!");
+		}
+	}
+}
 
 
 	
