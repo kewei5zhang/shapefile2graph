@@ -13,6 +13,7 @@ public class DemoGraph{
 		BuildGraph dGraph = new BuildGraph();
 		dGraph.addVertexes();
 		dGraph.addEdges();
+		dGraph.printGraph();
 
 		//compute shortest path
 		String source = "173036";

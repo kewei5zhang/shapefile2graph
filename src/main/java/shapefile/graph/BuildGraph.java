@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * this class build up a graph with files imported in ShapeFileReader class
- * @author s4366844
+ * this class build up a graph with data imported from ShapeFileReader class
+ * @author s4366844 Kewei Zhang
  *
  */
 public class BuildGraph {

@@ -39,16 +39,12 @@ public class Graph {
         }
         
     }
-    
     /**
-     * This method adds am edge between Vertices one and two
-     * of weight 1, if no Edge between these Vertices already
-     * exists in the Graph.
-     * 
-     * @param one The first vertex to add
-     * @param two The second vertex to add
-     * @return true iff no Edge relating one and two exists in the Graph
+     * This method adds an existing edge, which contains vertex one, two and weight.
+     * @param e
+     * @return true if no edge relating to one and two exists in the Graph
      */
+  
     public boolean addEdge(Edge e){
     	 if(e.getOne().equals(e.getTwo())){
              return false;   
@@ -70,7 +66,15 @@ public class Graph {
          e.getTwo().addNeighbor(e);
          return true;
     }
-    
+    /**
+     * This method adds an edge between Vertices one and two
+     * of weight 1, if no Edge between these Vertices already
+     * exists in the Graph.
+     * 
+     * @param one The first vertex to add
+     * @param two The second vertex to add
+     * @return true iff no Edge relating one and two exists in the Graph
+     */
     
     public boolean addEdge(Vertex one, Vertex two){
         return addEdge(one, two, 1);
